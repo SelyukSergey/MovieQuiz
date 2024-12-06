@@ -7,7 +7,12 @@
 
 import Foundation
 
-class QuestionFactory {
+class QuestionFactory: QuestionFactoryProtocol {
+    weak var delegate: QuestionFactoryDelegate?
+    func setup(delegate: QuestionFactoryDelegate) {
+          self.delegate = delegate
+      }
+    
     private var questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
@@ -52,14 +57,15 @@ class QuestionFactory {
     ]
     
 
-    func requestNextQuestion() -> QuizQuestion? { // 1
-        // 2
+    func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
-            return nil
+            delegate?.didReceiveNextQuestion(question: nil)
+            return
         }
-        
-        return questions[safe: index] // 3
-}
+
+        let question = questions[safe: index]
+        delegate?.didReceiveNextQuestion(question: question)
+    } 
     subscript(index: Int) -> QuizQuestion? {
         get {
             if index >= 0 && index < questions.count {
