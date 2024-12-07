@@ -8,9 +8,6 @@
 import UIKit
 
 class AlertPresenter {
-    static let shared = AlertPresenter()
-    
-    private init() {}
     
     func presentAlert(with model: AlertModel, from controller: UIViewController) {
         let alert = UIAlertController(

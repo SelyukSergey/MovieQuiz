@@ -8,10 +8,12 @@
 import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
+    
     weak var delegate: QuestionFactoryDelegate?
+    
     func setup(delegate: QuestionFactoryDelegate) {
-          self.delegate = delegate
-      }
+        self.delegate = delegate
+    }
     
     private var questions: [QuizQuestion] = [
         QuizQuestion(
@@ -56,16 +58,16 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false)
     ]
     
-
     func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
             return
         }
-
+        
         let question = questions[safe: index]
         delegate?.didReceiveNextQuestion(question: question)
-    } 
+    }
+    
     subscript(index: Int) -> QuizQuestion? {
         get {
             if index >= 0 && index < questions.count {
@@ -74,10 +76,10 @@ class QuestionFactory: QuestionFactoryProtocol {
                 return nil
             }
         }
-            set(newValue) {
-                if index >= 0 && index < questions.count {
-                    questions[index] = newValue!
-                }
+        set(newValue) {
+            if index >= 0 && index < questions.count {
+                questions[index] = newValue!
             }
         }
     }
+}

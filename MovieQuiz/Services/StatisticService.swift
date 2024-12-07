@@ -21,9 +21,6 @@ final class StatisticService: StatisticServiceProtocol {
     
     var totalAccuracy: Double {
         get {
-            let totalQuestions = storage.integer(forKey: Keys.totalQuestions.rawValue)
-            let totalCorrect = storage.integer(forKey: Keys.totalCorrect.rawValue)
-            
             guard totalQuestions > 0 else {
                 return 0.0
             }
@@ -33,7 +30,6 @@ final class StatisticService: StatisticServiceProtocol {
         }
     }
     
-    
     var gamesCount: Int {
         get {
             return storage.integer(forKey: Keys.gamesCount.rawValue)
@@ -42,7 +38,6 @@ final class StatisticService: StatisticServiceProtocol {
             storage.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    
     
     var bestGame: GameResult {
         get {
@@ -59,24 +54,33 @@ final class StatisticService: StatisticServiceProtocol {
         }
     }
     
+    private(set) var totalCorrect: Int {
+        get {
+            return storage.integer(forKey: Keys.totalCorrect.rawValue)
+        }
+        set {
+            storage.set(newValue, forKey: Keys.totalCorrect.rawValue)
+        }
+    }
+    
+    private(set) var totalQuestions: Int {
+        get {
+            return storage.integer(forKey: Keys.totalQuestions.rawValue)
+        }
+        set {
+            storage.set(newValue, forKey: Keys.totalQuestions.rawValue)
+        }
+    }
+    
     func store(correct count: Int, total amount: Int) {
-        // Инкрементируем количество сыгранных квизов
         let newGamesCount = gamesCount + 1
         gamesCount = newGamesCount
         
-        let previousTotalCorrect = storage.integer(forKey: Keys.totalCorrect.rawValue)
-        let updatedTotalCorrect = previousTotalCorrect + count
-        storage.set(updatedTotalCorrect, forKey: Keys.totalCorrect.rawValue)
+        totalCorrect += count
+        totalQuestions += amount
         
-        let previousTotalQuestions = storage.integer(forKey: Keys.totalQuestions.rawValue)
-        let updatedTotalQuestions = previousTotalQuestions + amount
-        storage.set(updatedTotalQuestions, forKey: Keys.totalQuestions.rawValue)
-        
-        // Обновляем лучшие показатели, если текущее значение лучше
         if count >= bestGame.correct || (count == bestGame.correct && amount <= bestGame.total) {
-            storage.set(count, forKey: Keys.bestGameCorrect.rawValue)
-            storage.set(amount, forKey: Keys.bestGameTotal.rawValue)
-            storage.set(Date(), forKey: Keys.bestGameDate.rawValue)
+            bestGame = GameResult(correct: count, total: amount, date: Date())
         }
     }
 }
