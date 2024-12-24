@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Public Properties
     var statisticService: StatisticServiceProtocol = StatisticService()
-    var questionFactory: QuestionFactoryProtocol!
+    var questionFactory: QuestionFactoryProtocol?
     
     // MARK: - IBOutlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -23,15 +23,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-       imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        
+        imageView.layer.cornerRadius = 20
+        var questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticService()
-
+        
         showLoadingIndicator()
         questionFactory.loadData()
     }
-
+    
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -52,7 +52,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true // скрываем индикатор загрузки
-        questionFactory.requestNextQuestion()
+        questionFactory?.requestNextQuestion()
     }
     
     // MARK: - Private Methods
@@ -99,7 +99,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 
-                self.questionFactory.requestNextQuestion()
+                self.questionFactory?.requestNextQuestion()
             })
         let alertPresenter = AlertPresenter()
         alertPresenter.presentAlert(with: alertModel, from: self)
@@ -137,7 +137,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             currentQuestionIndex += 1
             self.imageView.layer.borderColor = UIColor.clear.cgColor
-            questionFactory.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
         }
     }
     private func showLoadingIndicator() {
@@ -161,7 +161,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             
-            self.questionFactory.requestNextQuestion()
+            self.questionFactory?.requestNextQuestion()
         }
         let alertPresenter = AlertPresenter()
         alertPresenter.presentAlert(with: model, from: self)
