@@ -1,10 +1,3 @@
-//
-//  GameResult.swift
-//  MovieQuiz
-//
-//  Created by Сергей Селюк on 05.12.2024.
-//
-
 import Foundation
 
 struct GameResult {

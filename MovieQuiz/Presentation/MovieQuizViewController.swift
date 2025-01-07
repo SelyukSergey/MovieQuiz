@@ -2,12 +2,8 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
-    // MARK: - Public Properties
-    var statisticService: StatisticServiceProtocol = StatisticService()
-    var questionFactory: QuestionFactoryProtocol?
-    
     // MARK: - IBOutlets
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -15,6 +11,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var noButton: UIButton!
     
     // MARK: - Private Properties
+    private var statisticService: StatisticServiceProtocol = StatisticService()
+    private var questionFactory: QuestionFactoryProtocol?
+    
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private var currentQuestion: QuizQuestion?
@@ -25,11 +24,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
-        let questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticService()
+        activityIndicator.hidesWhenStopped = true // настраиваем индикатор на автоматическое скрытие при остановке анимации
         
         showLoadingIndicator()
-        questionFactory.loadData()
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -141,13 +141,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.startAnimating() // включаем анимацию, индикатор автоматически появляется
     }
     
     private func hideLoadingIndicator() {
-        activityIndicator.stopAnimating() // останавливаем анимацию
-        activityIndicator.isHidden = true // скрываем индикатор
+        activityIndicator.stopAnimating() // останавливаем анимацию, индикатор автоматически скрывается
     }
     
     private func showNetworkError(message: String) {
