@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
     
     func presentAlert(with model: AlertModel, from controller: UIViewController) {
         let alert = UIAlertController(
@@ -8,6 +8,7 @@ class AlertPresenter {
             message: model.message,
             preferredStyle: .alert
         )
+        alert.view.accessibilityIdentifier = "Alert"
         
         let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
             model.completion?()
