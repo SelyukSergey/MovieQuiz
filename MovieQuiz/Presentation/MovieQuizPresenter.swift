@@ -2,7 +2,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
-    private let statisticService: StatisticServiceProtocol!
+    private var statisticService: StatisticServiceProtocol
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
     
@@ -36,7 +36,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+        guard let question else {
             return
         }
         
@@ -76,18 +76,13 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         )
     }
     
-    func yesButtonClicked() {
-        if buttonsEnabled {
-            buttonsEnabled = false
-            didAnswer(isYes: true)
-        }
+    func buttonClicked(isYes: Bool) {
+        guard buttonsEnabled else { return }
+        
+        buttonsEnabled = false
+        didAnswer(isYes: isYes)
     }
-    func noButtonClicked() {
-        if buttonsEnabled {
-            buttonsEnabled = false
-            didAnswer(isYes: false)
-        }
-    }
+    
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
@@ -104,7 +99,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.proceedToNextQuestionOrResults()
         }
     }
