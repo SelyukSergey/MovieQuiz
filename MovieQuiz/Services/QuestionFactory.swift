@@ -3,13 +3,15 @@ import UIKit
 
 final class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
+    
     private weak var delegate: QuestionFactoryDelegate?
+    
+    private var movies: [MostPopularMovie] = []
     
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
-    private var movies: [MostPopularMovie] = []
     
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
@@ -42,12 +44,11 @@ final class QuestionFactory: QuestionFactoryProtocol {
             }
             
             let rating = Float(movie.rating) ?? 0
-            // случайный выбор порога для сравнения от 7 до 9
+            
             let threshold = Int.random(in: 7...9)
-            // случайный выбор направления сравнения (больше или меньше)
+            
             let comparisonType = Bool.random()
             
-            // формирование текста вопроса
             let text = comparisonType ? "Рейтинг этого фильма больше чем \(threshold)?" : "Рейтинг этого фильма меньше чем \(threshold)?"
             let correctAnswer = comparisonType ? (rating > Float(threshold)) : (rating < Float(threshold))
             

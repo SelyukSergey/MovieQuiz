@@ -6,7 +6,7 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
-    private let networkClient: NetworkRouting
+    private let networkClient : NetworkRouting
     
     init(networkClient: NetworkRouting = NetworkClient()) {
         self.networkClient = networkClient
@@ -14,9 +14,8 @@ struct MoviesLoader: MoviesLoading {
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
-        // если мы не смогли преобразовать строку в URL, то приложение упадет с ошибкой
         guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf") else {
-            preconditionFailure("Unable to construct mostPopularMoviesUrl")
+            preconditionFailure("Unable to construct mostPopularMoviesUrl") // если мы не смогли преобразовать строку в URL, то приложение упадет с ошибкой
         }
         return url
     }

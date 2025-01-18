@@ -33,7 +33,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     // MARK: - Private functions
-    
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.image = step.image
@@ -69,8 +68,8 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func showLoadingIndicator() {
-        activityIndicator.isHidden = false // говорим, что индикатор загрузки не скрыт
-        activityIndicator.startAnimating() // включаем анимацию
+        activityIndicator.isHidden = false 
+        activityIndicator.startAnimating()
     }
     
     func hideLoadingIndicator() {

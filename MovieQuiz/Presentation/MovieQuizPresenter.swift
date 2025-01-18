@@ -8,8 +8,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     private var currentQuestion: QuizQuestion?
     private let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswers: Int = 0
+    private var currentQuestionIndex: Int = .zero
+    private var correctAnswers: Int = .zero
     
     private var buttonsEnabled = true
     
@@ -59,8 +59,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func restartGame() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
+        currentQuestionIndex = .zero
+        correctAnswers = .zero
         questionFactory?.requestNextQuestion()
     }
     
