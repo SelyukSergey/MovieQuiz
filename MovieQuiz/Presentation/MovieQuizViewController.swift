@@ -32,7 +32,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         presenter?.buttonClicked(isYes: false)
     }
     
-    // MARK: - Private functions
+    // MARK: - Functions
     func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.image = step.image
